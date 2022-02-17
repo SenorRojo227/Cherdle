@@ -11,49 +11,51 @@
       <header>Cherdle</header>
       <table id="board">
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td id="00" onclick="assignPos(0, 0)"><img/></td>
+          <td id="10" onclick="assignPos(1, 0)"><img/></td>
+          <td id="20" onclick="assignPos(2, 0)"><img/></td>
+          <td id="30" onclick="assignPos(3, 0)"><img/></td>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td id="01" onclick="assignPos(0, 1)"><img/></td>
+          <td id="11" onclick="assignPos(1, 1)"><img/></td>
+          <td id="21" onclick="assignPos(2, 1)"><img/></td>
+          <td id="31" onclick="assignPos(3, 1)"><img/></td>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td id="02" onclick="assignPos(0, 2)"><img/></td>
+          <td id="12" onclick="assignPos(1, 2)"><img/></td>
+          <td id="22" onclick="assignPos(2, 2)"><img/></td>
+          <td id="32" onclick="assignPos(3, 2)"><img/></td>
         </tr>
         <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td id="03" onclick="assignPos(0, 3)"><img/></td>
+          <td id="13" onclick="assignPos(1, 3)"><img/></td>
+          <td id="23" onclick="assignPos(2, 3)"><img/></td>
+          <td id="33" onclick="assignPos(3, 3)"><img/></td>
         </tr>
       </table>
       <table id="options">
         <tr>
-          <td><img src="src/Pawn_W.png"/></td>
-          <td><img src="src/Knight_W.png"/></td>
-          <td><img src="src/Bishop_W.png"/></td>
-          <td><img src="src/Rook_W.png"/></td>
-          <td><img src="src/Queen_W.png"/></td>
-          <td><img src="src/King_W.png"/></td>
-          <td></td>
+          <td class="pieceOption" id="Pawn_W" onclick="selectPiece('Pawn_W')"><img src="src/Pawn_W.png"/></td>
+          <td class="pieceOption" id="Knight_W" onclick="selectPiece('Knight_W')"><img src="src/Knight_W.png"/></td>
+          <td class="pieceOption" id="Bishop_W" onclick="selectPiece('Bishop_W')"><img src="src/Bishop_W.png"/></td>
+          <td class="pieceOption" id="Rook_W" onclick="selectPiece('Rook_W')"><img src="src/Rook_W.png"/></td>
+          <td class="pieceOption" id="Queen_W" onclick="selectPiece('Queen_W')"><img src="src/Queen_W.png"/></td>
+          <td class="pieceOption" id="King_W" onclick="selectPiece('King_W')"><img src="src/King_W.png"/></td>
+          <td class="pieceOption" id="Cancel" onclick="selectPiece('Cancel')"><img src="src/Cancel.png"/></td>
         </tr>
-        <tr>
-          <td><img src="src/Pawn_B.png"/></td>
-          <td><img src="src/Knight_B.png"/></td>
-          <td><img src="src/Bishop_B.png"/></td>
-          <td><img src="src/Rook_B.png"/></td>
-          <td><img src="src/Queen_B.png"/></td>
-          <td><img src="src/King_B.png"/></td>
-          <td></td>
+        <tr> 
+          <td class="pieceOption" id="Pawn_B" onclick="selectPiece('Pawn_B')"><img src="src/Pawn_B.png"/></td>
+          <td class="pieceOption" id="Knight_B" onclick="selectPiece('Knight_B')"><img src="src/Knight_B.png"/></td>
+          <td class="pieceOption" id="Bishop_B" onclick="selectPiece('Bishop_B')"><img src="src/Bishop_B.png"/></td>
+          <td class="pieceOption" id="Rook_B" onclick="selectPiece('Rook_B')"><img src="src/Rook_B.png"/></td>
+          <td class="pieceOption" id="Queen_B" onclick="selectPiece('Queen_B')"><img src="src/Queen_B.png"/></td>
+          <td class="pieceOption" id="King_B" onclick="selectPiece('King_B')"><img src="src/King_B.png"/></td>
+          <td class="pieceOption" id="Submit"><img src="src/Submit.png"/></td>
         </tr>
       </table>
     </body>
+
+    <footer>Created by William Galiber</footer>
 </html>
