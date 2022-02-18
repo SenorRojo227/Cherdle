@@ -52,10 +52,10 @@ let grid = [[[null, null, null, null],
              [null, null, null, null]]];
 
 //Test Answer
-let answer = [[null, null, null, Queen.color = "W"],
+let answer = [[null, null, null, addPiece(Queen, "W")],
               [null, null, null, null],
-              [Pawn.color = "B", null, null, null],
-              [King.color = "B", null, null, Rook.color = "W"]];
+              [addPiece(Pawn, "B"), null, null, null],
+              [addPiece(King, "B"), null, null, addPiece(Rook, "W")]];
 /*
 let answer = [[Knight.color = "W", Bishop.color = "B", null, null],
               [null, null, King.color = "B", null],
@@ -65,6 +65,11 @@ let answer = [[Knight.color = "W", Bishop.color = "B", null, null],
 
 //Guess Progress
 let progress = [];
+
+//Adds color to piece object
+function addPiece(piece, colorCode) {
+    return Object.assign({}, piece, {color: colorCode});
+}
 
 //Select a Piece
 function selectPiece(piece) {
@@ -239,34 +244,29 @@ function isMate() {
 function getPieceObj(piece) {
     switch(piece) {
         case "Pawn_W":
-            return Pawn.color = "W";
-            break;
+            return addPiece(Pawn, "W");
         case "Pawn_B":
-            return Pawn.color = "B";
-            break;
+            return addPiece(Pawn, "B");
         case "Knight_W":
-            return Knight.color = "W";
-            break;
+            return addPiece(Knight, "W");
         case "Knight_B":
-            return Knight.color = "B";
-            break;
+            return addPiece(Knight, "B");
         case "Bishop_W":
-            return Bishop.color = "W";
-            break;
+            return addPiece(Bishop, "W");
         case "Bishop_B":
-            return Bishop.color = "B";
-            break;
+            return addPiece(Bishop, "B");
+        case "Rook_W":
+            return addPiece(Rook, "W");
+        case "Rook_B":
+            return addPiece(Rook, "B");
         case "Queen_W":
-            return Queen.color = "W";
-            break;
+            return addPiece(Queen, "W");
         case "Queen_B":
-            return Queen.color = "B";
-            break;
+            return addPiece(Queen, "B");
         case "King_W":
-            return King.color = "W";
-            break;
+            return addPiece(King, "W");
         case "King_B":
-            return King.color = "B";
-            break;
+            return addPiece(King, "B");
+            
     }
 }
