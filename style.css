@@ -28,6 +28,18 @@ table {
     background-color: #FFF;
     width: 24%;
     height: 24%;
+    transition: background-color 1s;
+}
+#board .green {
+    background-color: #5F5;
+}
+
+#board .blue {
+    background-color: #55F;
+}
+
+#board .gray {
+    background-color: #999;
 }
 
 #board td img {
