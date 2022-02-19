@@ -52,16 +52,15 @@ let grid = [[[null, null, null, null],
              [null, null, null, null]]];
 
 //Test Answer
-let answer = [[null, null, null, addPiece(Queen, "W")],
+/*let answer = [[null, null, null, addPiece(Queen, "W")],
               [null, null, null, null],
               [addPiece(Pawn, "B"), null, null, null],
               [addPiece(King, "B"), null, null, addPiece(Rook, "W")]];
-/*
-let answer = [[Knight.color = "W", Bishop.color = "B", null, null],
-              [null, null, King.color = "B", null],
-              [Bishop.color = "W", null, null, null],
-              [null, Pawn.color = "W", null, Rook.color = "W"]];
 */
+let answer = [[addPiece(Knight, "W"), addPiece(Bishop, "B"), null, null],
+              [null, null, addPiece(King, "B"), null],
+              [addPiece(Bishop, "W"), null, null, null],
+              [null, addPiece(Pawn, "W"), null, addPiece(Rook, "W")]];
 
 //Guess Progress
 let progress = [];
