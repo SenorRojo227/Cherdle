@@ -181,7 +181,7 @@ function fillMiniGrid() {
     for (let y = 0; y < 4; y++) {
         for (let x = 0; x < 4; x++) {
             if (grid[currentGuess][y][x] != null) {
-                document.getElementById(currentGuess + "" + x + "" + y).src = getPieceString(grid[currentGuess][y][x]);
+                document.getElementById(currentGuess + "" + x + "" + y).firstChild.src = getPieceString(grid[currentGuess][y][x]);
             }
         }
     }

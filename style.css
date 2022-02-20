@@ -50,8 +50,8 @@ main {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    max-width: 30%;
-    max-height: 30%;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 #board {
@@ -83,7 +83,6 @@ main {
     background-color: #FF0;
 }
 
-
 #board td img {
     display: block;
     margin-left: auto;
@@ -91,6 +90,7 @@ main {
     max-width: 100%;
     max-height: 100%;
 }
+
 #options {
     margin-top: 20px;
     margin-left: auto;
