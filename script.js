@@ -158,11 +158,15 @@ function submitGuess() {
                 } else {
                     exit:
 
-                    //Check for Blue Squares
+                    //Check for Yellow Squares
                     for (let i = 0; i < 4; i++) {
                         for (let j = 0; j < 4; j++) {
                             if (answer[j][i] != null && grid[currentGuess][y][x].name == answer[j][i].name && grid[currentGuess][y][x].color == answer[j][i].color) {
-                                progress[currentGuess][y][x] = "Y";
+                                if (Math.abs(y - j) < 2 && Math.abs(x - i) < 2) {
+                                    progress[currentGuess][y][x] = "O";
+                                } else {
+                                    progress[currentGuess][y][x] = "Y";
+                                }
                                 break exit;
                             }
                         }
@@ -203,6 +207,11 @@ function colorGrid(colorMini) {
                     if (colorMini) {
                         document.getElementById(currentGuess + "" + x + "" + y).classList.add("yellow");
                     }     
+                } else if (progress[currentGuess][y][x] == "O") {
+                    document.getElementById(x + "" + y).classList.add("orange");
+                    if (colorMini) {
+                        document.getElementById(currentGuess + "" + x + "" + y).classList.add("orange");
+                    }     
                 }
             }
         }
@@ -222,6 +231,7 @@ function resetGrid() {
             square.firstChild.src = "";
             square.classList.remove("green");
             square.classList.remove("yellow");
+            square.classList.remove("orange");
 
             if (grid[currentGuess][y][x] != null) {
                 square.firstChild.src = getPieceString(grid[currentGuess][y][x]);

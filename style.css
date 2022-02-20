@@ -71,12 +71,20 @@ main {
     background-color: #5F5;
 }
 
+#board .orange {
+    background-color: #F90;
+}
+
 #board .yellow {
     background-color: #FF0;
 }
 
 .miniboard .green {
     background-color: #5F5;
+}
+
+.miniboard .orange {
+    background-color: #F90;
 }
 
 .miniboard .yellow {
