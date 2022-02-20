@@ -9,32 +9,191 @@
     </head>
     <body>
       <header>Cherdle</header>
-      <table id="board">
-        <tr>
-          <td id="00" onclick="assignPos(0, 0)"><img/></td>
-          <td id="10" onclick="assignPos(1, 0)"><img/></td>
-          <td id="20" onclick="assignPos(2, 0)"><img/></td>
-          <td id="30" onclick="assignPos(3, 0)"><img/></td>
-        </tr>
-        <tr>
-          <td id="01" onclick="assignPos(0, 1)"><img/></td>
-          <td id="11" onclick="assignPos(1, 1)"><img/></td>
-          <td id="21" onclick="assignPos(2, 1)"><img/></td>
-          <td id="31" onclick="assignPos(3, 1)"><img/></td>
-        </tr>
-        <tr>
-          <td id="02" onclick="assignPos(0, 2)"><img/></td>
-          <td id="12" onclick="assignPos(1, 2)"><img/></td>
-          <td id="22" onclick="assignPos(2, 2)"><img/></td>
-          <td id="32" onclick="assignPos(3, 2)"><img/></td>
-        </tr>
-        <tr>
-          <td id="03" onclick="assignPos(0, 3)"><img/></td>
-          <td id="13" onclick="assignPos(1, 3)"><img/></td>
-          <td id="23" onclick="assignPos(2, 3)"><img/></td>
-          <td id="33" onclick="assignPos(3, 3)"><img/></td>
-        </tr>
-      </table>
+      <h2>Pieces Placed: <strong id="numPieces">0</strong>/6</h2>
+      <main>
+        <table id="mini1" class="miniboard selected" onclick="changeGuess(0)">
+          <tr>
+            <td id="000"><img/></td>
+            <td id="010"><img/></td>
+            <td id="020"><img/></td>
+            <td id="030"><img/></td>
+          </tr>
+          <tr>
+            <td id="001"><img/></td>
+            <td id="011"><img/></td>
+            <td id="021"><img/></td>
+            <td id="031"><img/></td>
+          </tr>
+          <tr>
+            <td id="002"><img/></td>
+            <td id="012"><img/></td>
+            <td id="022"><img/></td>
+            <td id="032"><img/></td>
+          </tr>
+          <tr>
+            <td id="003"><img/></td>
+            <td id="013"><img/></td>
+            <td id="023"><img/></td>
+            <td id="033"><img/></td>
+          </tr>
+        </table>
+        <table id="mini2" class="miniboard hidden" onclick="changeGuess(1)">
+          <tr>
+            <td id="100"><img/></td>
+            <td id="110"><img/></td>
+            <td id="120"><img/></td>
+            <td id="130"><img/></td>
+          </tr>
+          <tr>
+            <td id="101"><img/></td>
+            <td id="111"><img/></td>
+            <td id="121"><img/></td>
+            <td id="131"><img/></td>
+          </tr>
+          <tr>
+            <td id="102"><img/></td>
+            <td id="112"><img/></td>
+            <td id="122"><img/></td>
+            <td id="132"><img/></td>
+          </tr>
+          <tr>
+            <td id="103"><img/></td>
+            <td id="113"><img/></td>
+            <td id="123"><img/></td>
+            <td id="133"><img/></td>
+          </tr>
+        </table>
+        <table id="mini3" class="miniboard hidden" onclick="changeGuess(2)">
+          <tr>
+            <td id="200"><img/></td>
+            <td id="210"><img/></td>
+            <td id="220"><img/></td>
+            <td id="230"><img/></td>
+          </tr>
+          <tr>
+            <td id="201"><img/></td>
+            <td id="211"><img/></td>
+            <td id="221"><img/></td>
+            <td id="231"><img/></td>
+          </tr>
+          <tr>
+            <td id="202"><img/></td>
+            <td id="212"><img/></td>
+            <td id="222"><img/></td>
+            <td id="232"><img/></td>
+          </tr>
+          <tr>
+            <td id="203"><img/></td>
+            <td id="213"><img/></td>
+            <td id="223"><img/></td>
+            <td id="233"><img/></td>
+          </tr>
+        </table>
+        <table id="board">
+          <tr>
+            <td id="00" onclick="assignPos(0, 0)"><img/></td>
+            <td id="10" onclick="assignPos(1, 0)"><img/></td>
+            <td id="20" onclick="assignPos(2, 0)"><img/></td>
+            <td id="30" onclick="assignPos(3, 0)"><img/></td>
+          </tr>
+          <tr>
+            <td id="01" onclick="assignPos(0, 1)"><img/></td>
+            <td id="11" onclick="assignPos(1, 1)"><img/></td>
+            <td id="21" onclick="assignPos(2, 1)"><img/></td>
+            <td id="31" onclick="assignPos(3, 1)"><img/></td>
+          </tr>
+          <tr>
+            <td id="02" onclick="assignPos(0, 2)"><img/></td>
+            <td id="12" onclick="assignPos(1, 2)"><img/></td>
+            <td id="22" onclick="assignPos(2, 2)"><img/></td>
+            <td id="32" onclick="assignPos(3, 2)"><img/></td>
+          </tr>
+          <tr>
+            <td id="03" onclick="assignPos(0, 3)"><img/></td>
+            <td id="13" onclick="assignPos(1, 3)"><img/></td>
+            <td id="23" onclick="assignPos(2, 3)"><img/></td>
+            <td id="33" onclick="assignPos(3, 3)"><img/></td>
+          </tr>
+        </table>
+        <table id="mini4" class="miniboard hidden" onclick="changeGuess(3)">
+          <tr>
+            <td id="300"><img/></td>
+            <td id="310"><img/></td>
+            <td id="320"><img/></td>
+            <td id="330"><img/></td>
+          </tr>
+          <tr>
+            <td id="301"><img/></td>
+            <td id="311"><img/></td>
+            <td id="321"><img/></td>
+            <td id="331"><img/></td>
+          </tr>
+          <tr>
+            <td id="302"><img/></td>
+            <td id="312"><img/></td>
+            <td id="322"><img/></td>
+            <td id="332"><img/></td>
+          </tr>
+          <tr>
+            <td id="303"><img/></td>
+            <td id="313"><img/></td>
+            <td id="323"><img/></td>
+            <td id="333"><img/></td>
+          </tr>
+        </table>
+        <table id="mini5" class="miniboard hidden" onclick="changeGuess(4)">
+          <tr>
+            <td id="400"><img/></td>
+            <td id="410"><img/></td>
+            <td id="420"><img/></td>
+            <td id="430"><img/></td>
+          </tr>
+          <tr>
+            <td id="401"><img/></td>
+            <td id="411"><img/></td>
+            <td id="421"><img/></td>
+            <td id="431"><img/></td>
+          </tr>
+          <tr>
+            <td id="402"><img/></td>
+            <td id="412"><img/></td>
+            <td id="422"><img/></td>
+            <td id="432"><img/></td>
+          </tr>
+          <tr>
+            <td id="403"><img/></td>
+            <td id="413"><img/></td>
+            <td id="423"><img/></td>
+            <td id="433"><img/></td>
+          </tr>
+        </table>
+        <table id="mini6" class="miniboard hidden" onclick="changeGuess(5)">
+          <tr>
+            <td id="500"><img/></td>
+            <td id="510"><img/></td>
+            <td id="520"><img/></td>
+            <td id="530"><img/></td>
+          </tr>
+          <tr>
+            <td id="501"><img/></td>
+            <td id="511"><img/></td>
+            <td id="521"><img/></td>
+            <td id="531"><img/></td>
+          </tr>
+          <tr>
+            <td id="502"><img/></td>
+            <td id="512"><img/></td>
+            <td id="522"><img/></td>
+            <td id="532"><img/></td>
+          </tr>
+          <tr>
+            <td id="503"><img/></td>
+            <td id="513"><img/></td>
+            <td id="523"><img/></td>
+            <td id="533"><img/></td>
+          </tr>
+        </table>
+      </main>
       <table id="options">
         <tr>
           <td class="pieceOption" id="Pawn_W" onclick="selectPiece('Pawn_W')"><img src="src/Pawn_W.png"/></td>

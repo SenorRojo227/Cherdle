@@ -2,6 +2,7 @@
 let selectedPiece = "";
 let currentGuess = 0;
 let guesses = 0;
+let numPieces = [0, 0, 0, 0, 0, 0];
 
 //Piece Object Declarations
 let Pawn = {
@@ -90,29 +91,58 @@ function deselectAll() {
     }
 }
 
+//Assign the currently selected piece to a position
 function assignPos(xPos, yPos) {
     if (selectedPiece != "") {
-        let img = document.getElementById(xPos + "" + yPos).firstChild;
-        img.src = "src/" + selectedPiece + ".png";
-        grid[currentGuess][yPos][xPos] = getPieceObj(selectedPiece);
-    } else {
+        if (numPieces[currentGuess] < 6) {
+            if (grid[currentGuess][yPos][xPos] == null) {
+                numPieces[currentGuess]++;
+            }
+            let img = document.getElementById(xPos + "" + yPos).firstChild;
+            img.src = "src/" + selectedPiece + ".png";
+            grid[currentGuess][yPos][xPos] = getPieceObj(selectedPiece);
+        }
+    } else if (numPieces[currentGuess] > 0) {
+        numPieces[currentGuess]--;
         let img = document.getElementById(xPos + "" + yPos).firstChild;
         img.src = "";
         grid[currentGuess][yPos][xPos] = null;
     }
+
+    //Update the number of pieces placed
+    document.getElementById("numPieces").innerHTML = numPieces[currentGuess];
 }
 
 //Submit a Guess
 function submitGuess() {
 
-    if (currentGuess == guesses) {
+    let addMini = false;
 
-        //Progress Grid Declaration
+    //Check if 6 pieces have been placed or if at final guess
+    if (numPieces[currentGuess] < 6 || currentGuess >= 5) {
+        return;
+
+    //Check if latest guess
+    } else if (currentGuess == guesses) {
+
+        //Progress/Grid Declaration
         progress.push([["", "", "", ""],
                        ["", "", "", ""],
                        ["", "", "", ""],
                        ["", "", "", ""]]);
+        grid.push([[null, null, null, null],
+                   [null, null, null, null],
+                   [null, null, null, null],
+                   [null, null, null, null]])
         guesses++;
+        document.getElementById("mini" + (guesses + 1)).classList.remove("hidden");
+        addMini = true;
+    
+    //Proceed to next guess
+    } else {
+        changeGuess(currentGuess + 1)
+        resetGrid();
+        return;
     }
 
     //Validate Grid
@@ -132,7 +162,7 @@ function submitGuess() {
                     for (let i = 0; i < 4; i++) {
                         for (let j = 0; j < 4; j++) {
                             if (answer[j][i] != null && grid[currentGuess][y][x].name == answer[j][i].name && grid[currentGuess][y][x].color == answer[j][i].color) {
-                                progress[currentGuess][y][x] = "B";
+                                progress[currentGuess][y][x] = "Y";
                                 break exit;
                             }
                         }
@@ -141,40 +171,76 @@ function submitGuess() {
             }
         }
     }
-    colorGrid();
+    colorGrid(addMini);
+    if (addMini) {
+        fillMiniGrid();
+    }
 }
 
-function colorGrid() {
+function fillMiniGrid() {
     for (let y = 0; y < 4; y++) {
         for (let x = 0; x < 4; x++) {
-            if (progress[currentGuess][y][x] == "G") {
-                document.getElementById(x + "" + y).classList.add("green");
-            } else if (progress[currentGuess][y][x] == "B") {
-                document.getElementById(x + "" + y).classList.add("blue");
+            if (grid[currentGuess][y][x] != null) {
+                document.getElementById(currentGuess + "" + x + "" + y).src = getPieceString(grid[currentGuess][y][x]);
             }
         }
     }
 }
 
-//Move to Next Guess
-function nextGuess() {
-
-    //Check if moved to latest guess
-    if (currentGuess < guesses - 1) {
-        colorGrid();
-    }
-
-    //Move Guess
-    if (currentGuess < guesses) {
-        currentGuess++;
+//Color in the grid and/or minigrid
+function colorGrid(colorMini) {
+    for (let y = 0; y < 4; y++) {
+        for (let x = 0; x < 4; x++) {
+            if (currentGuess != guesses) {
+                if (progress[currentGuess][y][x] == "G") {
+                    document.getElementById(x + "" + y).classList.add("green");
+                    if (colorMini) {
+                        console.log(currentGuess + "" + x + "" + y);
+                        document.getElementById(currentGuess + "" + x + "" + y).classList.add("green");
+                    }
+                } else if (progress[currentGuess][y][x] == "Y") {
+                    document.getElementById(x + "" + y).classList.add("yellow");
+                    if (colorMini) {
+                        document.getElementById(currentGuess + "" + x + "" + y).classList.add("yellow");
+                    }     
+                }
+            }
+        }
     }
 }
 
-//Move to Previous Guess
-function previousGuess() {
-    if (currentGuess > 0) {
-        currentGuess--;
+//Reset the grid colors for next guess
+function resetGrid() {
+
+    //Update the number of pieces placed
+    document.getElementById("numPieces").innerHTML = numPieces[currentGuess];
+    
+    //Reset individual squares
+    for (let y = 0; y < 4; y++) {
+        for (let x = 0; x < 4; x++) {
+            let square = document.getElementById(x + "" + y);
+            square.firstChild.src = "";
+            square.classList.remove("green");
+            square.classList.remove("yellow");
+
+            if (grid[currentGuess][y][x] != null) {
+                square.firstChild.src = getPieceString(grid[currentGuess][y][x]);
+            }
+        }
     }
+}
+
+//Move to a selected guess
+function changeGuess(guessID) {
+
+    //Check if moved to latest guess
+    if (guessID <= guesses) {
+        document.getElementById("mini" + (currentGuess + 1)).classList.remove("selected");
+        currentGuess = guessID;
+        document.getElementById("mini" + (currentGuess + 1)).classList.add("selected");
+    }
+
+    resetGrid();
     colorGrid();
 }
 
@@ -237,6 +303,11 @@ function isMate() {
 
 
     return true;
+}
+
+//Convert Object to String
+function getPieceString(pieceObj) {
+    return "src/" + pieceObj.name + "_" + pieceObj.color + ".png";
 }
 
 //Convert String to Object
