@@ -52,16 +52,25 @@ let grid = [[[null, null, null, null],
              [null, null, null, null],
              [null, null, null, null]]];
 
+//Current Guess
+let currentCherdle = 1;
+
 //Test Answer
-/*let answer = [[null, null, null, addPiece(Queen, "W")],
-              [null, null, null, null],
-              [addPiece(Pawn, "B"), null, null, null],
-              [addPiece(King, "B"), null, null, addPiece(Rook, "W")]];
+/*let answers = [[null, null, null, addPiece(Queen, "W")],
+                 [null, null, null, null],
+                 [addPiece(Pawn, "B"), null, null, null],
+                 [addPiece(King, "B"), null, null, addPiece(Rook, "W")]];
 */
-let answer = [[addPiece(Knight, "W"), addPiece(Bishop, "B"), null, null],
-              [null, null, addPiece(King, "B"), null],
-              [addPiece(Bishop, "W"), null, null, null],
-              [null, addPiece(Pawn, "W"), null, addPiece(Rook, "W")]];
+
+let answers = [[[addPiece(Knight, "W"), addPiece(Bishop, "B"), null, null],
+                [null, null, addPiece(King, "B"), null],
+                [addPiece(Bishop, "W"), null, null, null],
+                [null, addPiece(Pawn, "W"), null, addPiece(Rook, "W")]],
+                
+                [null, addPiece(Queen, "W"), null, null],
+                [null, null, null, addPiece(Bishop, "W")],
+                [null, null, addPiece(Bishop, "B"), null],
+                [addPiece(Pawn, "B"), addPiece(King, "B"), addPiece(Rook, "B"), null]];
 
 //Guess Progress
 let progress = [];
@@ -102,7 +111,7 @@ function assignPos(xPos, yPos) {
             img.src = "src/" + selectedPiece + ".png";
             grid[currentGuess][yPos][xPos] = getPieceObj(selectedPiece);
         }
-    } else if (numPieces[currentGuess] > 0) {
+    } else if (numPieces[currentGuess] > 0 && grid[currentGuess][yPos][xPos] != null) {
         numPieces[currentGuess]--;
         let img = document.getElementById(xPos + "" + yPos).firstChild;
         img.src = "";
@@ -153,7 +162,7 @@ function submitGuess() {
             if (grid[currentGuess][y][x] != null) {
 
                 //Check for Green Squares
-                if (answer[y][x] != null && grid[currentGuess][y][x].name == answer[y][x].name && grid[currentGuess][y][x].color == answer[y][x].color) {
+                if (answers[currentCherdle][y][x] != null && grid[currentGuess][y][x].name == answers[currentCherdle][y][x].name && grid[currentGuess][y][x].color == answers[currentCherdle][y][x].color) {
                     progress[currentGuess][y][x] = "G";
                 } else {
                     exit:
@@ -161,7 +170,7 @@ function submitGuess() {
                     //Check for Yellow Squares
                     for (let i = 0; i < 4; i++) {
                         for (let j = 0; j < 4; j++) {
-                            if (answer[j][i] != null && grid[currentGuess][y][x].name == answer[j][i].name && grid[currentGuess][y][x].color == answer[j][i].color) {
+                            if (answers[currentCherdle][j][i] != null && grid[currentGuess][y][x].name == answers[currentCherdle][j][i].name && grid[currentGuess][y][x].color == answers[currentCherdle][j][i].color) {
                                 if (Math.abs(y - j) < 2 && Math.abs(x - i) < 2) {
                                     progress[currentGuess][y][x] = "O";
                                 } else {
