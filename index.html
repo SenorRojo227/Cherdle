@@ -9,6 +9,36 @@
     </head>
     <body>
       <header>Cherdle</header>
+      <nav id="info" onclick="openInfo()">
+        <h2>ⓘ</h2>
+      </nav>
+      <aside id="infoScreen">
+        <h2>Rules</h2>
+        <p>1. Spaces can be left blank.</p>
+        <p>2. Checkmates on the black king are the only answers considered to be valid.</p>
+        <p>3. All pieces MUST contribute to the checkmate.</p>
+        <p>4. There can not be more of the same piece than on a default chess board.</p>
+        <p>5. All guesses must have exactly 6 pieces.</p>
+        <h2>Colors</h2>
+        <div id="colors">
+          <div>
+            <img id="ex1" src="src/Pawn_B.png"/>
+            <p>The piece is in the right position</p>
+          </div>
+          <div>
+            <img id="ex2" src="src/King_W.png"/>
+            <p>The piece is adjacent to its correct location.</p>
+          </div>
+          <div>
+            <img id="ex3" src="src/Queen_B.png"/>
+            <p>The piece is not adjacent to its correct location.</p>
+          </div>
+          <div>
+            <img id="ex4" src="src/Knight_W.png"/>
+            <p>Blank square or the piece is not located anywhere in the puzzle.</p>
+          </div>
+        </div>
+      </aside>
       <h2>Pieces Placed: <strong id="numPieces">0</strong>/6</h2>
       <main>
         <table id="mini1" class="miniboard selected" onclick="changeGuess(0)">

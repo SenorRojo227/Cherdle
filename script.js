@@ -3,6 +3,9 @@ let selectedPiece = "";
 let currentGuess = 0;
 let guesses = 0;
 let numPieces = [0, 0, 0, 0, 0, 0];
+let currentCherdle = 0;
+let numCorrect = 0;
+let infoScreen = false;
 
 //Piece Object Declarations
 let Pawn = {
@@ -52,25 +55,16 @@ let grid = [[[null, null, null, null],
              [null, null, null, null],
              [null, null, null, null]]];
 
-//Current Guess
-let currentCherdle = 1;
-
-//Test Answer
-/*let answers = [[null, null, null, addPiece(Queen, "W")],
-                 [null, null, null, null],
-                 [addPiece(Pawn, "B"), null, null, null],
-                 [addPiece(King, "B"), null, null, addPiece(Rook, "W")]];
-*/
-
+//Cherdle Answer List
 let answers = [[[addPiece(Knight, "W"), addPiece(Bishop, "B"), null, null],
                 [null, null, addPiece(King, "B"), null],
                 [addPiece(Bishop, "W"), null, null, null],
                 [null, addPiece(Pawn, "W"), null, addPiece(Rook, "W")]],
                 
-                [null, addPiece(Queen, "W"), null, null],
+               [[null, addPiece(Queen, "W"), null, null],
                 [null, null, null, addPiece(Bishop, "W")],
                 [null, null, addPiece(Bishop, "B"), null],
-                [addPiece(Pawn, "B"), addPiece(King, "B"), addPiece(Rook, "B"), null]];
+                [addPiece(Pawn, "B"), addPiece(King, "B"), addPiece(Rook, "B"), null]]];
 
 //Guess Progress
 let progress = [];
@@ -82,12 +76,20 @@ function addPiece(piece, colorCode) {
 
 //Select a Piece
 function selectPiece(piece) {
-    deselectAll();
-    document.getElementById(piece).style.backgroundColor = "#BBB";
-    if (piece == "Cancel") {
-        selectedPiece = "";
+
+    //Check if current piece is deselected
+    if (piece == selectedPiece || (piece == "Cancel" && selectedPiece == "")) {
+        deselectAll();
+    
+    //Check if new piece is selected
     } else {
-        selectedPiece = piece;
+        deselectAll();
+        document.getElementById(piece).style.backgroundColor = "#BBB";
+        if (piece == "Cancel") {
+            selectedPiece = "";
+        } else {
+            selectedPiece = piece;
+        }
     }
 }
 
@@ -102,30 +104,35 @@ function deselectAll() {
 
 //Assign the currently selected piece to a position
 function assignPos(xPos, yPos) {
-    if (selectedPiece != "") {
-        if (numPieces[currentGuess] < 6) {
-            if (grid[currentGuess][yPos][xPos] == null) {
-                numPieces[currentGuess]++;
+    if (numCorrect < 6 && currentGuess == guesses) {
+        if (selectedPiece != "") {
+            if (numPieces[currentGuess] < 6) {
+                if (grid[currentGuess][yPos][xPos] == null) {
+                    numPieces[currentGuess]++;
+                }
+                let img = document.getElementById(xPos + "" + yPos).firstChild;
+                img.src = "src/" + selectedPiece + ".png";
+                grid[currentGuess][yPos][xPos] = getPieceObj(selectedPiece);
             }
+        } else if (numPieces[currentGuess] > 0 && grid[currentGuess][yPos][xPos] != null) {
+            numPieces[currentGuess]--;
             let img = document.getElementById(xPos + "" + yPos).firstChild;
-            img.src = "src/" + selectedPiece + ".png";
-            grid[currentGuess][yPos][xPos] = getPieceObj(selectedPiece);
+            img.src = "";
+            grid[currentGuess][yPos][xPos] = null;
         }
-    } else if (numPieces[currentGuess] > 0 && grid[currentGuess][yPos][xPos] != null) {
-        numPieces[currentGuess]--;
-        let img = document.getElementById(xPos + "" + yPos).firstChild;
-        img.src = "";
-        grid[currentGuess][yPos][xPos] = null;
-    }
 
-    //Update the number of pieces placed
-    document.getElementById("numPieces").innerHTML = numPieces[currentGuess];
+        //Update the number of pieces placed
+        document.getElementById("numPieces").innerHTML = numPieces[currentGuess];
+    }
 }
 
 //Submit a Guess
 function submitGuess() {
 
     let addMini = false;
+    if (numCorrect < 6) {
+        numCorrect = 0;
+    }
 
     //Check if 6 pieces have been placed or if at final guess
     if (numPieces[currentGuess] < 6 || currentGuess >= 5) {
@@ -144,13 +151,16 @@ function submitGuess() {
                    [null, null, null, null],
                    [null, null, null, null]])
         guesses++;
-        document.getElementById("mini" + (guesses + 1)).classList.remove("hidden");
         addMini = true;
     
     //Proceed to next guess
-    } else {
+    } else if (numCorrect < 6) {
         changeGuess(currentGuess + 1)
         resetGrid();
+        return;
+    
+    //Do not proceed if solution is found
+    } else {
         return;
     }
 
@@ -164,10 +174,11 @@ function submitGuess() {
                 //Check for Green Squares
                 if (answers[currentCherdle][y][x] != null && grid[currentGuess][y][x].name == answers[currentCherdle][y][x].name && grid[currentGuess][y][x].color == answers[currentCherdle][y][x].color) {
                     progress[currentGuess][y][x] = "G";
+                    numCorrect++;
                 } else {
                     exit:
 
-                    //Check for Yellow Squares
+                    //Check for Orange/Yellow Squares
                     for (let i = 0; i < 4; i++) {
                         for (let j = 0; j < 4; j++) {
                             if (answers[currentCherdle][j][i] != null && grid[currentGuess][y][x].name == answers[currentCherdle][j][i].name && grid[currentGuess][y][x].color == answers[currentCherdle][j][i].color) {
@@ -184,12 +195,21 @@ function submitGuess() {
             }
         }
     }
+    
     colorGrid(addMini);
     if (addMini) {
         fillMiniGrid();
     }
+
+    //Check if game is won
+    if (numCorrect == 6) {
+        winGame();
+    } else {
+        document.getElementById("mini" + (guesses + 1)).classList.remove("hidden");
+    }
 }
 
+//Add pieces to the latest mini grid
 function fillMiniGrid() {
     for (let y = 0; y < 4; y++) {
         for (let x = 0; x < 4; x++) {
@@ -261,6 +281,33 @@ function changeGuess(guessID) {
 
     resetGrid();
     colorGrid();
+}
+
+//Show Completion Screen
+function winGame() {
+    document.getElementById("mini" + guesses).style.borderColor = "#0D0";
+}
+
+//Show Info Screen
+function openInfo() {
+    let screen = document.getElementById("infoScreen");
+    let elements = document.getElementsByTagName("*");
+    if (!infoScreen) {
+        for(element of elements) {
+            if (element != screen) {
+                element.classList.add("dim");
+            }
+        }
+        screen.classList.add("shown");
+        infoScreen = true;
+    } else {
+        for(element of elements) {
+            element.classList.remove("dim");
+        }
+        screen.classList.remove("shown");
+        infoScreen = false;
+    }
+
 }
 
 //Get the positions of all targetted squares
