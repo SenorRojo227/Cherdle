@@ -1,11 +1,14 @@
+//Set Cherdle
+let currentCherdle = 1;
+
 //Variable Declaration
 let selectedPiece = "";
 let currentGuess = 0;
 let guesses = 0;
 let numPieces = [0, 0, 0, 0, 0, 0];
-let currentCherdle = 0;
 let numCorrect = 0;
 let infoScreen = false;
+let gameOver = false;
 
 //Piece Object Declarations
 let Pawn = {
@@ -69,6 +72,12 @@ let answers = [[[addPiece(Knight, "W"), addPiece(Bishop, "B"), null, null],
 //Guess Progress
 let progress = [];
 
+function setCherdleNum() {
+    document.getElementById("cherdleNum").innerHTML = currentCherdle + 1;
+}
+
+window.onload = setCherdleNum;
+
 //Adds color to piece object
 function addPiece(piece, colorCode) {
     return Object.assign({}, piece, {color: colorCode});
@@ -77,19 +86,23 @@ function addPiece(piece, colorCode) {
 //Select a Piece
 function selectPiece(piece) {
 
-    //Check if current piece is deselected
-    if (piece == selectedPiece || (piece == "Cancel" && selectedPiece == "")) {
-        deselectAll();
-    
-    //Check if new piece is selected
-    } else {
-        deselectAll();
-        document.getElementById(piece).style.backgroundColor = "#BBB";
-        if (piece == "Cancel") {
-            selectedPiece = "";
+    if (!gameOver) {
+
+        //Check if current piece is deselected
+        if (piece == selectedPiece || (piece == "Cancel" && selectedPiece == "")) {
+            deselectAll();
+        
+        //Check if new piece is selected
         } else {
-            selectedPiece = piece;
+            deselectAll();
+            document.getElementById(piece).style.backgroundColor = "#BBB";
+            if (piece == "Cancel") {
+                selectedPiece = "";
+            } else {
+                selectedPiece = piece;
+            }
         }
+
     }
 }
 
@@ -122,7 +135,9 @@ function assignPos(xPos, yPos) {
         }
 
         //Update the number of pieces placed
-        document.getElementById("numPieces").innerHTML = numPieces[currentGuess];
+        if (guesses < 6) {
+            document.getElementById("numPieces").innerHTML = numPieces[currentGuess];
+        }
     }
 }
 
@@ -134,24 +149,33 @@ function submitGuess() {
         numCorrect = 0;
     }
 
-    //Check if 6 pieces have been placed or if at final guess
-    if (numPieces[currentGuess] < 6 || currentGuess >= 5) {
+    //Check if 6 pieces have been placed
+    if (numPieces[currentGuess] < 6 || gameOver) {
+        return;
+
+    //Check if on final guess
+    } else if (guesses >= 6) {
+        gameOver = true;
+        endGame(false);
         return;
 
     //Check if latest guess
     } else if (currentGuess == guesses) {
 
-        //Progress/Grid Declaration
-        progress.push([["", "", "", ""],
-                       ["", "", "", ""],
-                       ["", "", "", ""],
-                       ["", "", "", ""]]);
-        grid.push([[null, null, null, null],
-                   [null, null, null, null],
-                   [null, null, null, null],
-                   [null, null, null, null]])
+        if (!gameOver) {
+
+            //Progress/Grid Declaration
+            progress.push([["", "", "", ""],
+                           ["", "", "", ""],
+                           ["", "", "", ""],
+                           ["", "", "", ""]]);
+            grid.push([[null, null, null, null],
+                       [null, null, null, null],
+                       [null, null, null, null],
+                       [null, null, null, null]])
+            addMini = true;
+        }
         guesses++;
-        addMini = true;
     
     //Proceed to next guess
     } else if (numCorrect < 6) {
@@ -203,7 +227,7 @@ function submitGuess() {
 
     //Check if game is won
     if (numCorrect == 6) {
-        winGame();
+        endGame(true);
     } else {
         document.getElementById("mini" + (guesses + 1)).classList.remove("hidden");
     }
@@ -228,7 +252,6 @@ function colorGrid(colorMini) {
                 if (progress[currentGuess][y][x] == "G") {
                     document.getElementById(x + "" + y).classList.add("green");
                     if (colorMini) {
-                        console.log(currentGuess + "" + x + "" + y);
                         document.getElementById(currentGuess + "" + x + "" + y).classList.add("green");
                     }
                 } else if (progress[currentGuess][y][x] == "Y") {
@@ -272,20 +295,26 @@ function resetGrid() {
 //Move to a selected guess
 function changeGuess(guessID) {
 
-    //Check if moved to latest guess
-    if (guessID <= guesses) {
-        document.getElementById("mini" + (currentGuess + 1)).classList.remove("selected");
-        currentGuess = guessID;
-        document.getElementById("mini" + (currentGuess + 1)).classList.add("selected");
-    }
+    if (guessID < 6) {
 
-    resetGrid();
-    colorGrid();
+        //Check if moved to latest guess
+        if (guessID <= guesses) {
+            document.getElementById("mini" + (currentGuess + 1)).classList.remove("selected");
+            currentGuess = guessID;
+            document.getElementById("mini" + (currentGuess + 1)).classList.add("selected");
+        }
+
+        resetGrid();
+        colorGrid();
+
+    }
 }
 
 //Show Completion Screen
-function winGame() {
-    document.getElementById("mini" + guesses).style.borderColor = "#0D0";
+function endGame(hasWon) {
+    if (hasWon) {
+        document.getElementById("mini" + guesses).style.borderColor = "#0D0";
+    }
 }
 
 //Show Info Screen
