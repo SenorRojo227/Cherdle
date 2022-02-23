@@ -1,5 +1,5 @@
 //Set Cherdle
-let currentCherdle = 1;
+let currentCherdle = 3;
 
 //Variable Declaration
 let selectedPiece = "";
@@ -67,13 +67,18 @@ let answers = [[[addPiece(Knight, "W"), addPiece(Bishop, "B"), null, null],
                [[null, addPiece(Queen, "W"), null, null],
                 [null, null, null, addPiece(Bishop, "W")],
                 [null, null, addPiece(Bishop, "B"), null],
-                [addPiece(Pawn, "B"), addPiece(King, "B"), addPiece(Rook, "B"), null]]];
+                [addPiece(Pawn, "B"), addPiece(King, "B"), addPiece(Rook, "B"), null]],
+                
+                [[null, addPiece(Queen, "B"), null, null],
+                 [null, addPiece(King, "B"), addPiece(Knight, "B"), null],
+                 [addPiece(Rook, "W"), null, null, addPiece(Knight, "W")],
+                 [null, addPiece(Pawn, "W"), null, null]]];
 
 //Guess Progress
 let progress = [];
 
 function setCherdleNum() {
-    document.getElementById("cherdleNum").innerHTML = currentCherdle + 1;
+    document.getElementById("cherdleNum").innerHTML = currentCherdle;
 }
 
 window.onload = setCherdleNum;
@@ -196,7 +201,7 @@ function submitGuess() {
             if (grid[currentGuess][y][x] != null) {
 
                 //Check for Green Squares
-                if (answers[currentCherdle][y][x] != null && grid[currentGuess][y][x].name == answers[currentCherdle][y][x].name && grid[currentGuess][y][x].color == answers[currentCherdle][y][x].color) {
+                if (answers[currentCherdle - 1][y][x] != null && grid[currentGuess][y][x].name == answers[currentCherdle - 1][y][x].name && grid[currentGuess][y][x].color == answers[currentCherdle - 1][y][x].color) {
                     progress[currentGuess][y][x] = "G";
                     numCorrect++;
                 } else {
@@ -205,7 +210,7 @@ function submitGuess() {
                     //Check for Orange/Yellow Squares
                     for (let i = 0; i < 4; i++) {
                         for (let j = 0; j < 4; j++) {
-                            if (answers[currentCherdle][j][i] != null && grid[currentGuess][y][x].name == answers[currentCherdle][j][i].name && grid[currentGuess][y][x].color == answers[currentCherdle][j][i].color) {
+                            if (answers[currentCherdle - 1][j][i] != null && grid[currentGuess][y][x].name == answers[currentCherdle - 1][j][i].name && grid[currentGuess][y][x].color == answers[currentCherdle - 1][j][i].color) {
                                 if (Math.abs(y - j) < 2 && Math.abs(x - i) < 2) {
                                     progress[currentGuess][y][x] = "O";
                                 } else {
