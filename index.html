@@ -8,7 +8,7 @@
       <script defer src="script.js"></script>
     </head>
     <body>
-      <header>Cherdle #<span id="cherdleNum"></span></header>
+      <header>Cherdle #<span class="cherdleNum"></span></header>
       <nav id="info" onclick="openInfo()">
         <h2>ⓘ</h2>
       </nav>
@@ -38,6 +38,11 @@
             <p>Blank square or the piece is not located anywhere in the puzzle.</p>
           </div>
         </div>
+      </aside>
+      <aside id="winScreen">
+        <h2>You Win!</h2>
+        <textarea id="winTextBox">Cherdle</textarea>
+        <button onclick="closeWin()">Close</button>
       </aside>
       <h2>Pieces Placed: <strong id="numPieces">0</strong>/6</h2>
       <main>

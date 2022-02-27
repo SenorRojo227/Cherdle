@@ -1,5 +1,5 @@
 //Set Cherdle
-let currentCherdle = 6;
+let currentCherdle = 7;
 
 //Variable Declaration
 let selectedPiece = "";
@@ -87,13 +87,21 @@ let answers = [[[addPiece(Knight, "W"), addPiece(Bishop, "B"), null, null],
                [[null, addPiece(King, "B"), addPiece(Bishop, "B"), null],
                 [addPiece(Queen, "B"), addPiece(Pawn, "W"), null, null],
                 [null, null, null, addPiece(Bishop, "W")],
-                [null, null, addPiece(Knight, "W"), null]]];
+                [null, null, addPiece(Knight, "W"), null]],
+                
+                [[null, addPiece(Queen, "W"), null, null],
+                 [null, null, addPiece(Knight, "W"), null],
+                 [null, null, addPiece(King, "B"), null],
+                 [null, addPiece(Pawn, "W"), addPiece(Pawn, "B"), addPiece(Rook, "W")]]];
 
 //Guess Progress
 let progress = [];
 
 function setCherdleNum() {
-    document.getElementById("cherdleNum").innerHTML = currentCherdle;
+    const nums = document.querySelectorAll(".cherdleNum");
+    nums.forEach(element => {
+        element.innerHTML = currentCherdle;
+    });
 }
 
 window.onload = setCherdleNum;
@@ -220,6 +228,7 @@ function submitGuess() {
                     progress[currentGuess][y][x] = "G";
                     numCorrect++;
                 } else {
+                    let isGray = true;
                     exit:
 
                     //Check for Orange/Yellow Squares
@@ -231,9 +240,13 @@ function submitGuess() {
                                 } else {
                                     progress[currentGuess][y][x] = "Y";
                                 }
+                                isGray = false;
                                 break exit;
                             }
                         }
+                    }
+                    if (isGray && grid[currentGuess][y][x] != null) {
+                        progress[currentGuess][y][x] = "X";
                     }
                 }
             }
@@ -333,7 +346,35 @@ function changeGuess(guessID) {
 //Show Completion Screen
 function endGame(hasWon) {
     if (hasWon) {
+
+        //Change Final Board Color to Green
         document.getElementById("mini" + guesses).style.borderColor = "#0D0";
+
+        //Write Win Message
+        document.getElementById("winTextBox").innerHTML = "Cherdle #" + currentCherdle + "\n\n";
+
+        for (let i = 0; i < guesses; i++) {
+            for (let j = 0; j < 4; j++) {
+                for (let k = 0; k < 4; k++) {
+
+                    //Add color emojis
+                    if (progress[i][j][k] != "") {
+                        if (progress[i][j][k] == "G") {
+                            document.getElementById("winTextBox").innerHTML += String.fromCodePoint(129001);
+                        } else if (progress[i][j][k] == "O") {
+                            document.getElementById("winTextBox").innerHTML += String.fromCodePoint(128999);
+                        } else if (progress[i][j][k] == "Y") {
+                            document.getElementById("winTextBox").innerHTML += String.fromCodePoint(129000);
+                        } else if (progress[i][j][k] == "X") {
+                            document.getElementById("winTextBox").innerHTML += String.fromCodePoint(11035);
+                        }
+                    }
+                }
+                
+            }
+            document.getElementById("winTextBox").innerHTML += "\n";
+        }
+        document.getElementById("winScreen").classList.add("shown");
     }
 }
 
@@ -357,6 +398,10 @@ function openInfo() {
         infoScreen = false;
     }
 
+}
+
+function closeWin() {
+    document.getElementById("winScreen").classList.remove("shown");
 }
 
 //Get the positions of all targetted squares
