@@ -351,7 +351,7 @@ function endGame(hasWon) {
         document.getElementById("mini" + guesses).style.borderColor = "#0D0";
 
         //Write Win Message
-        document.getElementById("winTextBox").innerHTML = "Cherdle #" + currentCherdle + "\n\n";
+        document.getElementById("winTextBox").innerHTML = "Cherdle " + currentCherdle + " " + guesses + "/6\n\n";
 
         for (let i = 0; i < guesses; i++) {
             for (let j = 0; j < 4; j++) {
