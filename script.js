@@ -261,16 +261,12 @@ function submitGuess() {
         fillMiniGrid();
     }
 
-    //Check if game is lost
-    if (guesses >= 6) {
-        gameOver = true;
-        endGame(false);
-        return;
-    }
-
-    //Check if game is won
+    //Check if game is won or lost
     if (numCorrect == 6) {
         endGame(true);
+    } else if (guesses >= 6) {
+        gameOver = true;
+        endGame(false);
     } else {
         document.getElementById("mini" + (guesses + 1)).classList.remove("hidden");
     }
