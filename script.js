@@ -1,5 +1,5 @@
 //Set Cherdle
-let currentCherdle = 7;
+let currentCherdle = 8;
 
 //Variable Declaration
 let selectedPiece = "";
@@ -92,7 +92,12 @@ let answers = [[[addPiece(Knight, "W"), addPiece(Bishop, "B"), null, null],
                 [[null, addPiece(Queen, "W"), null, null],
                  [null, null, addPiece(Knight, "W"), null],
                  [null, null, addPiece(King, "B"), null],
-                 [null, addPiece(Pawn, "W"), addPiece(Pawn, "B"), addPiece(Rook, "W")]]];
+                 [null, addPiece(Pawn, "W"), addPiece(Pawn, "B"), addPiece(Rook, "W")]],
+                
+                 [[null, addPiece(King, "W"), null, null],
+                  [null, null, addPiece(Knight, "W"), addPiece(Bishop, "W")],
+                  [addPiece(King, "B"), addPiece(Knight, "B"), null, null],
+                  [addPiece(Queen, "B"), null, null, null]]];
 
 //Guess Progress
 let progress = [];
@@ -183,8 +188,6 @@ function submitGuess() {
 
     //Check if on final guess
     } else if (guesses >= 6) {
-        gameOver = true;
-        endGame(false);
         return;
 
     //Check if latest guess
@@ -256,6 +259,13 @@ function submitGuess() {
     colorGrid(addMini);
     if (addMini) {
         fillMiniGrid();
+    }
+
+    //Check if game is lost
+    if (guesses >= 6) {
+        gameOver = true;
+        endGame(false);
+        return;
     }
 
     //Check if game is won
@@ -353,29 +363,33 @@ function endGame(hasWon) {
         //Write Win Message
         document.getElementById("winTextBox").innerHTML = "Cherdle " + currentCherdle + " " + guesses + "/6\n\n";
 
-        for (let i = 0; i < guesses; i++) {
-            for (let j = 0; j < 4; j++) {
-                for (let k = 0; k < 4; k++) {
+    } else {
+        document.getElementById("winMessage").innerHTML = "You Lose!";
+        document.getElementById("winTextBox").innerHTML = "Cherdle " + currentCherdle + " 0/6\n\n";
+    }
 
-                    //Add color emojis
-                    if (progress[i][j][k] != "") {
-                        if (progress[i][j][k] == "G") {
-                            document.getElementById("winTextBox").innerHTML += String.fromCodePoint(129001);
-                        } else if (progress[i][j][k] == "O") {
-                            document.getElementById("winTextBox").innerHTML += String.fromCodePoint(128999);
-                        } else if (progress[i][j][k] == "Y") {
-                            document.getElementById("winTextBox").innerHTML += String.fromCodePoint(129000);
-                        } else if (progress[i][j][k] == "X") {
-                            document.getElementById("winTextBox").innerHTML += String.fromCodePoint(11035);
-                        }
+    for (let i = 0; i < guesses; i++) {
+        for (let j = 0; j < 4; j++) {
+            for (let k = 0; k < 4; k++) {
+
+                //Add color emojis
+                if (progress[i][j][k] != "") {
+                    if (progress[i][j][k] == "G") {
+                        document.getElementById("winTextBox").innerHTML += String.fromCodePoint(129001);
+                    } else if (progress[i][j][k] == "O") {
+                        document.getElementById("winTextBox").innerHTML += String.fromCodePoint(128999);
+                    } else if (progress[i][j][k] == "Y") {
+                        document.getElementById("winTextBox").innerHTML += String.fromCodePoint(129000);
+                    } else if (progress[i][j][k] == "X") {
+                        document.getElementById("winTextBox").innerHTML += String.fromCodePoint(11035);
                     }
                 }
-                
             }
-            document.getElementById("winTextBox").innerHTML += "\n";
+            
         }
-        document.getElementById("winScreen").classList.add("shown");
+        document.getElementById("winTextBox").innerHTML += "\n";
     }
+    document.getElementById("winScreen").classList.add("shown");
 }
 
 //Show Info Screen
