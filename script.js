@@ -1,5 +1,5 @@
 //Set Cherdle
-let currentCherdle = 11;
+let currentCherdle = 12;
 
 //Variable Declaration
 let selectedPiece = "";
@@ -112,7 +112,12 @@ let answers = [[[addPiece(Knight, "W"), addPiece(Bishop, "B"), null, null],
                [[addPiece(Rook, "W"), null, null, null],
                 [null, null, null, addPiece(King, "W")],
                 [null, addPiece(King, "B"), null, addPiece(Knight, "W")],
-                [addPiece(Pawn, "W"), null, addPiece(Bishop, "B"), null]]];
+                [addPiece(Pawn, "W"), null, addPiece(Bishop, "B"), null]],
+                
+               [[addPiece(Queen, "W"), null, null, null],
+                [null, null, null, null],
+                [null, addPiece(Bishop, "W"), null, addPiece(Pawn, "B")],
+                [null, addPiece(Knight, "B"), addPiece(King, "B"), addPiece(Knight, "W")]]];
 
 //Guess Progress
 let progress = [];
